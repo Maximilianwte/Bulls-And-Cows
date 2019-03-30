@@ -26,11 +26,19 @@ void Bull::intro(void) const{
 
 void Bull::play_game(void) {
     intro();
-    generate_word(0);
+    word = generate_word(0);
+
+    FText guess;
 
     while (game_state_won == false) {
-        get_guess();
+        guess = get_guess();
+        // first the struct and then the initialized form.
+        FBullCowCount BullCowCount = eval_guess(guess);
+        std::cout << "Bulls: " << BullCowCount.Bulls;
+        std::cout << ". Cows: " << BullCowCount.Cows << std::endl;
     }
+
+    game_state_won = play_again();
 };
 
 FText Bull::generate_word(int input) {
@@ -42,18 +50,39 @@ FText Bull::generate_word(int input) {
 };
 
 FText Bull::get_guess(void) {
-    int current_try = 1;
     FText guess;
     std::cout << "Try " << current_try << ". Enter your guess: ";
     std::getline (std::cin, guess);
-    std::cout << "Your guess was: " << guess << std::endl;
     return guess;
 };
 
-Bull_Cow_Count Bull::eval_guess(FString) {
+FBullCowCount Bull::eval_guess(FString guess) {
     current_try++;
 
-    return Bull_Cow_Count();
+    // setup the return variable from the struct
+    FBullCowCount BullCowCount;
+    int word_length = word.length();
+    for (int i = 0; i < word_length; i++) {
+        for (int j = 0; j < word_length; j++) {
+            if (guess[i] == word[i] && i == j) {
+                BullCowCount.Bulls++;
+            }
+            else if (guess[i] == word[i] && i != j) {
+                BullCowCount.Cows++;
+            }
+        }
+    }
+
+    if (BullCowCount.Bulls == word_length) {
+        game_state_won = true;
+        std::cout << "You won! You needed " << current_try;
+        std::cout << " tries to complete the word: " << word << ". \n";
+    }
+    else {
+        game_state_won = false;
+    }
+
+    return BullCowCount;
 };
 
 bool Bull::play_again(void) {

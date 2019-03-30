@@ -1,9 +1,11 @@
 #include <string>
 
-#ifndef __BULL_H__
-#define __BULL_H__
-
 using FString = std::string;
+
+struct FBullCowCount {
+    int Bulls = 0;
+    int Cows = 0;
+};
 
 // Full class of the game.
 class Bull {
@@ -19,7 +21,7 @@ class Bull {
         bool play_again(void);
         FString generate_word(int input);
         FString get_guess(void);
-        Bull_Cow_Count eval_guess(FString);
+        FBullCowCount eval_guess(FString);
     private:
         bool game_state_won;
         int current_try;
@@ -27,9 +29,3 @@ class Bull {
         const int WORD_LENGTH = 5;
         FString word;
 };
-
-struct Bull_Cow_Count {
-    int Bulls = 0;
-    int Cows = 0;
-};
-#endif
