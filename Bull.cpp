@@ -9,9 +9,9 @@ Bull::Bull(void) {
 }
 
 void Bull::reset(void) {
-    int MAX_TRIES = 10;
+    constexpr int MAX_TRIES = 10;
     max_tries = MAX_TRIES;
-    current_try = 0;
+    current_try = 1;
     game_state_won = false;
     return;
 }
@@ -29,7 +29,6 @@ void Bull::play_game(void) {
     word = generate_word(0);
 
     FText guess;
-
     while (game_state_won == false) {
         guess = get_guess();
         // first the struct and then the initialized form.
@@ -39,6 +38,7 @@ void Bull::play_game(void) {
     }
 
     game_state_won = play_again();
+    return;
 };
 
 FText Bull::generate_word(int input) {
@@ -64,11 +64,13 @@ FBullCowCount Bull::eval_guess(FString guess) {
     int word_length = word.length();
     for (int i = 0; i < word_length; i++) {
         for (int j = 0; j < word_length; j++) {
-            if (guess[i] == word[i] && i == j) {
-                BullCowCount.Bulls++;
-            }
-            else if (guess[i] == word[i] && i != j) {
-                BullCowCount.Cows++;
+            if (guess[j] == word[i]){
+                if (i == j) {
+                    BullCowCount.Bulls++;
+                }
+                else {
+                    BullCowCount.Cows++;
+                }
             }
         }
     }
@@ -91,15 +93,18 @@ bool Bull::play_again(void) {
     std::cout << "Y or N? Enter: ";
     std::getline(std::cin, input);
     if (input[0] == 'Y') {
-        return true;
+        reset();
     }
-    else if (input[0] == 'N') {
-        return false;
-    }
+    else if (input[0] == 'N') {}
     else {
         std::cout << "Please enter either Y or N. \n";
-        Bull::play_again();
+        play_again();
     };
+    return;
+};
+
+EWordStatus check_input(FString) {
+    return EWordStatus::Okay;
 };
 
 // getter methods

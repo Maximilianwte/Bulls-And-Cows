@@ -7,6 +7,12 @@ struct FBullCowCount {
     int Cows = 0;
 };
 
+enum EWordStatus {
+    Okay,
+    Not_Isogram,
+    No_Input
+};
+
 // Full class of the game.
 class Bull {
     public:
@@ -22,6 +28,7 @@ class Bull {
         FString generate_word(int input);
         FString get_guess(void);
         FBullCowCount eval_guess(FString);
+        EWordStatus check_input(FString);
     private:
         bool game_state_won;
         int current_try;

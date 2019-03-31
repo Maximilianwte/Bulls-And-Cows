@@ -8,5 +8,8 @@ Bull BCGame;
 
 int main(void) {
     BCGame.play_game();
+    switch (BCGame.is_game_won()){
+        case false: BCGame.play_game();
+    }
     return 0;
 };
